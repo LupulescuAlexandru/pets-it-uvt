@@ -1,0 +1,100 @@
+{% load custom_tags %}
+<head>
+    <script>
+            function myNewFunction(sel) {
+                show(sel.options[sel.selectedIndex].text);
+            }
+            function show(elementID) {
+                // try to find the requested page and alert if it's not found
+                var ele = document.getElementById(elementID);
+                if (!ele) {
+                    alert("no such element");
+                    return;
+                }
+
+                // get all pages, loop through them and hide them
+                var pages = document.getElementsByClassName('module aligned');
+                for(var i = 1; i < pages.length; i++) {
+                    pages[i].style.display = 'none';
+                    console.log(pages[i])
+                }
+
+                // then show the requested page
+                ele.style.display = 'block';
+            }
+        </script>
+</head>
+
+<style>
+    {% for field in otherChoice %}
+        .form-row.field-{{ field }}other {
+            display: None;
+        }
+    {% endfor %}
+</style>
+{% if not fieldset.name == 'Identificare animal' and not fieldset.name == 'Examenul aparatului digestiv'%}
+<fieldset class="module aligned {{ fieldset.classes }}" id="{{fieldset.name}}" style="display:none">
+    {% if fieldset.name %}<h2>{{fieldset.name}}</h2>{% endif %}
+    {% else %}
+ <fieldset class="module aligned {{ fieldset.classes }}" id="{{fieldset.name}}">
+     {% if fieldset.name == 'Identificare animal' %}<h2>{{fieldset.name}}</h2>
+     {% elif fieldset.name != 'Identificare animal' %} <h2><select id="examenselect" onChange="myNewFunction(this);">
+        <option value="Examenul aparatului digestiv">Examenul aparatului digestiv</option>
+        <option value="Examenul aparatului respirator">Examenul aparatului respirator</option>
+        <option value="Examenul toraco-pulmonar">Examenul toraco-pulmonar</option>
+        <option value="Examenul aparatului cardio-vascular">Examenul aparatului cardio-vascular</option>
+        <option value="Examenul aparatului urinar">Examenul aparatului urinar</option>
+        <option value="Examenul rinichilor">Examenul rinichilor</option>
+        <option value="Examenul vezicii urinare">Examenul vezicii urinare</option>
+        <option value="Examenul aparatului locomotor">Examenul aparatului locomotor</option>
+        <option value="Examenul complementar">Examenul complementar</option>
+ </select></h2>
+     {% endif %}
+     {% endif %}
+
+    {% if fieldset.description %}
+        <div class="description">{{ fieldset.description|safe }}</div>
+    {% endif %}
+    {% for line in fieldset %}
+        <div class="form-row{% if line.fields|length_is:'1' and line.errors %} errors{% endif %}{% if not line.has_visible_field %} hidden{% endif %}{% for field in line %}{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% endfor %}">
+            {% if line.fields|length_is:'1' %}{{ line.errors }}{% endif %}
+            {% for field in line %}
+                <div{% if not line.fields|length_is:'1' %} class="fieldBox{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% if not field.is_readonly and field.errors %} errors{% endif %}{% if field.field.is_hidden %} hidden{% endif %}"{% elif field.is_checkbox %} class="checkbox-row"{% endif %}>
+                    {% if not line.fields|length_is:'1' and not field.is_readonly %}{{ field.errors }}{% endif %}
+                    {% if field.is_checkbox %}
+                    {{ field.field }}{{ field.label_tag }}
+                    {% else %}
+                        {{ field.label_tag }}
+                        {% if field.is_readonly %}
+                            <div class="readonly">{{ field.contents }}</div>
+                        {% else %}
+
+                            {% for i in otherChoice %}
+                                {% if field.field.name == i %}
+                                    <ul id="id_{{i}}">
+                                        {{ adminform.form|get_form_field:i|get_form_field:0 }}
+                                        <li>
+                                            {{ adminform.form|get_form_field:i|get_form_field:1 }}
+                                            {% with i|add:"other" as otherField %}
+                                                 {{ adminform.form|get_form_field:otherField }}
+                                            {% endwith %}
+                                        </li>
+                                    </ul>
+
+                                {% endif %}
+                            {% endfor %}
+                            {% if field.field.name not in otherChoice %}
+                                {{ field.field }}
+                            {% endif %}
+                            {{ adminform.form.get_ARIAPANCREATICA_display }}
+
+                        {% endif %}
+                    {% endif %}
+                    {% if field.field.help_text %}
+                        <div class="help">{{ field.field.help_text|safe }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</fieldset>
