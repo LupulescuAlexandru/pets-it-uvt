@@ -1,8 +1,6 @@
 from dal import autocomplete
 from django.db.models import Q
-
 from .models import Animal, Proprietar
-from django.shortcuts import render
 
 class AnimalAutoComplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):

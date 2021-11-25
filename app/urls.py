@@ -19,6 +19,8 @@ from django.urls import include, re_path, path
 from django.conf.urls import url
 from django.conf import settings
 from django.views.static import serve
+
+from animal.views import AnimalAutoComplete, ProprietarAutoComplete
 from my_admin.views import register
 
 @login_required
@@ -31,4 +33,18 @@ urlpatterns = [
     path('', include('my_admin.urls')),
     re_path(r'^', admin.site.urls),
     url(r'^%s(?P<path>.*)$' % settings.MEDIA_URL[1:], protected_serve, {'document_root': settings.MEDIA_ROOT}),
+    url(
+        'animal-autocomplete/',
+        AnimalAutoComplete.as_view(
+
+        ),
+        name='animal-autocomplete',
+    ),
+    url(
+        'proprietar-autocomplete/',
+        ProprietarAutoComplete.as_view(
+
+        ),
+        name='proprietar-autocomplete',
+    ),
 ]
