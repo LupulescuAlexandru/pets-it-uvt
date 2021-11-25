@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rangefilter',
     'bootstrap_datepicker_plus',
     'animal',
+    'consultatie'
 ]
 
 MIDDLEWARE = [
