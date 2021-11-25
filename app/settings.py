@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'bootstrap_datepicker_plus',
     'animal',
     'consultatie',
-    'fisa'
+    'fisa',
+    'inventariu'
 ]
 
 MIDDLEWARE = [
