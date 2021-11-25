@@ -99,17 +99,6 @@ if DEBUG:
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'petsit_db',
-            'USER': 'admindb',
-            'PASSWORD': 'ec8H3BvIw2!LU$t',
-            'HOST': 'localhost',
-            'PORT': '',
-        }
-    }
 
 
 # Password validation
@@ -136,10 +125,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'asysstum@gmail.com'
-EMAIL_HOST_PASSWORD = 'kNYxU%936hERq7Y*'
+EMAIL_HOST_USER = 'test@gmail.com'
+EMAIL_HOST_PASSWORD = 'test123'
 EMAIL_PORT = 587
-DEFAULT_FROM_EMAIL = 'Asysstum Team'
+DEFAULT_FROM_EMAIL = 'Pets IT'
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
 
 LANGUAGE_CODE = 'en-us'
