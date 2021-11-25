@@ -1,0 +1,379 @@
+{% load i18n static %}<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+<head>
+<title>Pets IT</title>
+
+<link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/base.css" %}{% endblock %}">
+{% block extrastyle %}{% endblock %}
+{% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}">{% endif %}
+{% block extrahead %}{% endblock %}
+{% block responsive %}
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static "admin/responsive.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "admin/styles.css" %}">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/all.css" integrity="sha384-rtJEYb85SiYWgfpCr0jn174XgJTn4rptSOQsMroFBPQSGLdOC5IbubP6lJ35qoM9" crossorigin="anonymous">
+    <script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script>
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+
+    {% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% static "admin/css/responsive_rtl.css" %}">{% endif %}
+{% endblock %}
+{% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE">{% endblock %}
+</head>
+{% load i18n %}
+
+<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}"
+  data-admin-utc-offset="{% now "Z" %}">
+
+
+<script type="text/javascript" >
+$(document).ready(function()
+{
+    $("#notificationLink").click(function() {
+        if ($("#notificationContainer").is(":visible"))
+        {
+            $("#notificationContainer").fadeToggle(100);
+        }
+        else
+        {
+            $("#notificationContainer").fadeToggle(100);
+        }
+
+    });
+});
+</script>
+
+<style>
+body {
+  width: 100%;
+  height: 100%;
+}
+.badge-notification{
+        bottom: 12px;
+    background: red;
+    font-size: 12px;
+    border: red;
+    border-style: solid;
+    border-radius: 3px;
+    position: relative;
+    left: -13px;
+}
+.sidebar-a {
+    font-size: 16px;
+}
+
+.slideout-menu {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 256px;
+  min-height: 100vh;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  z-index: 0;
+  display: none;
+    background: linear-gradient(315deg, rgba(0,0,0,0) 0%, rgba(58,160,74,0.7) 0%);
+}
+
+.slideout-menu-left {
+  left: 0;
+}
+
+.slideout-menu-right {
+  right: 0;
+}
+
+.slideout-panel {
+  position: unset !important;
+  z-index: 1;
+  will-change: transform;
+  background: #FFF; /* A background-color is required */
+}
+
+.slideout-open,
+.slideout-open body,
+.slideout-open .slideout-panel {
+  overflow: hidden;
+}
+
+.slideout-open .slideout-menu {
+  display: block;
+}
+
+h1.brandingTitle{
+    padding: 1px 2px;
+    display:inline-block;
+    color: rgba(255,255,255,0.7)
+}
+.module h2, .module caption, .inline-group h2{
+    background-image: linear-gradient(315deg, rgba(0,0,0,0) 0%, rgba(58,180,74,0.80) 0%);
+}
+table.calendar{
+    table-layout: fixed;
+}
+
+#notificationContainer
+{
+background-color: #fff;
+border: 1px solid rgba(100, 100, 100, .4);
+-webkit-box-shadow: 0 3px 8px rgba(0, 0, 0, .25);
+overflow: visible;
+position: absolute;
+top: 52px;
+margin-left: -193px;
+width: 400px;
+z-index: 2;
+display: none;
+}
+
+#notificationContainer:before {
+content: '';
+display: block;
+position: absolute;
+width: 0;
+height: 0;
+color: transparent;
+border: 10px solid black;
+border-color: transparent transparent white;
+margin-top: -20px;
+margin-left: 188px;
+}
+
+#notificationTitle {
+    margin-top: 5px;
+    font-size: 13px;
+    background-color: #ffffff;
+    position: fixed;
+    z-index: 1000;
+    width: 384px;
+    border-bottom: 1px solid #dddddd;
+}
+
+#notificationsBody {
+padding: 45px 0px 0px 0px !important;
+min-height:300px;
+    overflow-y: scroll;
+    max-height: 100px;
+    text-transform: none;
+}
+
+.messageNotification{
+    text-align: left;
+    float: left;
+    font-size: 18px;
+    color: black;
+    line-height: 1.5;
+}
+
+.fa-times{
+    font-size: 15px;
+}
+
+
+
+@media (max-width: 1024px) {
+    #header {
+        display: block;
+        height: 25px;
+    }
+    #user-tools{
+        visibility: hidden;
+        clear: both;
+        float: left;
+        margin: 10px auto 5px 20px;
+        width: 28%;
+        display: none;
+    }
+
+    #ul.footer{
+      bottom: 0;
+      width: 100%;
+      position: absolute;
+    }
+
+}
+
+</style>
+<!-- Container -->
+    {% if not is_popup %}
+    <!-- Header -->
+    <nav id="menu" class="menu">
+
+      <section class="menu-section">
+
+        <h3 class="menu-section-title">Managment utilizatori</h3>
+
+        <ul class="menu-section-list">
+            <li><a class="sidebar-a" href="/auth/user/" ><i class="fas fa-user"></i> Utilizatori</a></li>
+            <li><a class="sidebar-a" href="/admin/logentry/"><i class="fa fa-book"></i> Actiuni recente</a></li>
+        </ul>
+      </section>
+
+        <section class="menu-section">
+        <h3 class="menu-section-title">Clienti</h3>
+        <ul class="menu-section-list">
+          <li><a class="sidebar-a" href="/animal/animal/"><i class="fa fa-paw"></i> Animale</a></li>
+            <li><a class="sidebar-a" href="/animal/proprietar/"><i class="fa fa-users"></i> Proprietari</a></li>
+        </ul>
+      </section>
+
+        </section>
+        <section class="menu-section">
+        <h3 class="menu-section-title">Fise</h3>
+        <ul class="menu-section-list">
+            <li><a class="sidebar-a" href="/fisa/fisa/"><i class="fas fa-file-medical"></i> Fise</a></li>
+        </ul>
+      </section>
+
+      <section class="menu-section">
+        <h3 class="menu-section-title">Inventar</h3>
+        <ul class="menu-section-list">
+          <li><a class="sidebar-a" href="/inventariu/consumabile/"><i class="fa fa-warehouse"></i> Consumabile</a></li>
+        </ul>
+      </section>
+        <section class="menu-section">
+        <h3 class="menu-section-title">Programari</h3>
+        <ul class="menu-section-list">
+            <li><a class="sidebar-a" href="/programari/event/?day__gte={{ todaydate }}&day__lt={{ tomorrowdate }}"><i class="far fa-calendar"></i> Programari</a></li>
+        </ul>
+      </section>
+	<section class="menu-section">
+        <h3 class="menu-section-title">GDPR</h3>
+        <ul class="menu-section-list">
+            <li><a class="sidebar-a" href="/media/fise/GDPR.docx"><i class="fas fa-file"></i> GDPR</a></li>
+        </ul>
+      </section>
+    </nav>
+
+    <main id="panel" data-slideout-ignore>
+
+    <div id="header">
+        <div id="branding">
+            <input class=toggle-button type="image" src="{% static "slidebutton.png" %}"/ width=21px height=15px>
+        </div>
+        <h1 class="brandingTitle">Pets IT Administration </h1>
+        {% block usertools %}
+        {% if has_permission %}
+        <div id="user-tools" style="color: white;">
+            {% block welcome-msg %}
+                <!-- <div id="notificationContainer">
+                    <div id="notificationTitle"><p style="color: black; float: left; margin-left: 9px;">Notifications</p></div>
+
+                    <div id="notificationsBody" class="notifications">
+                        {% for notification in notification_user %}
+                            {% if notification.send_notification == 2 %}
+                                <div class="messageNotification">
+                                    <a href="/dismiss_notification/{{notification.id}}" style="all: unset; cursor: pointer; margin-left: 7px;"><i class="fas fa-times"></i></a>
+                                    <h1 style="font-size:18px; margin-left: 7px;"><img src="{% static 'admin/double-tick.png' %}" style="float: right;">Solicitarea pentru <a href="/fisa/fisa/{{notification.id}}/change/" style="color: #447e9b">{{ notification }}</a> a fost acceptata!</h1>
+                                </div>
+                            {% elif notification.send_notification == 1 %}
+                                <div class="messageNotification">
+                                    <a href="/dismiss_notification/{{notification.id}}" style="all: unset; cursor: pointer; margin-left: 7px;"><i class="fas fa-times"></i></a>
+                                    <h1 style="font-size:18px; margin-left: 7px;"><img src="{% static 'admin/reject.png' %}" style="float: right;">Solicitarea pentru <a href="/fisa/fisa/{{notification.id}}/change/" style="color: #447e9b">{{ notification }}</a> a fost respinsa!</h1>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                </div>
+            {% if request.user.is_superuser %}
+                <a href="/my_admin/modificare_req/" style="all: unset; cursor: pointer">
+            {% else %}
+                 <a href="#" style="all: unset; cursor: pointer" id="notificationLink">
+            {% endif %}
+
+                <span style="right:5px; top:4px; position: relative">
+                    <i class="fas fa-bell fa-2x"></i>
+                    {% if request.user.is_superuser %}
+                        {% if notification_counter != 0 %}
+                            <i class="badge-notification">{{notification_counter}}</i>
+                        {% endif %}
+                    {% else %}
+                        {% if notification_user_counter != 0 %}
+                            <i class="badge-notification">{{notification_user_counter}}</i>
+                        {% endif %}
+                    {% endif %}
+                </span>
+            </a> !-->
+
+                {% trans 'Bun venit,' %}
+                <strong>{% firstof user.get_short_name user.get_username %}</strong>.
+            {% endblock %}
+            {% block userlinks %}
+
+                {% if user.is_active and user.is_staff %}
+                    {% url 'django-admindocs-docroot' as docsroot %}
+                    {% if docsroot %}
+                        <a href="{{ docsroot }}">{% trans 'Documentation' %}</a> /
+                    {% endif %}
+                {% endif %}
+                {% if user.has_usable_password %}
+                <a href="{% url 'admin:password_change' %}">{% trans 'Schimbă parola' %}</a> /
+                {% endif %}
+                <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
+            {% endblock %}
+        </div>
+        {% endif %}
+        {% endblock %}
+        {% block nav-global %}{% endblock %}
+    </div>
+    <!-- END Header -->
+<div id="container">
+    {% block breadcrumbs %}
+    <div class="breadcrumbs">
+
+    {% if title %} {{ title }}{% endif %}
+    </div>
+    {% endblock %}
+    {% endif %}
+
+    {% block messages %}
+        {% if messages %}
+        <ul class="messagelist">{% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+        {% endfor %}</ul>
+        {% endif %}
+    {% endblock messages %}
+
+    <!-- Content -->
+
+    <div id="content" class="{% block coltype %}colM{% endblock %}">
+        {% block pretitle %}{% endblock %}
+        {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
+        {% block content %}
+        {% block object-tools %}{% endblock %}
+        {{ content }}
+        {% endblock %}
+        {% block sidebar %}{% endblock %}
+        <br class="clear">
+
+    </div>
+    <!-- END Content -->
+
+    {% block footer %}<div id="footer"></div>{% endblock %}
+</div>
+    </main>
+
+<!-- END Container -->
+    <script src="{% static "slideout.min.js" %}"></script>
+        <script>
+
+          var slideout = new Slideout({
+            'panel': document.getElementById('panel'),
+            'menu': document.getElementById('menu'),
+            'padding': 256,
+            'tolerance': 70,
+            'easing': 'ease-in'
+          });
+
+          // Toggle button
+          document.querySelector('.toggle-button').addEventListener('click', function() {
+            slideout.toggle();
+          });
+    </script>
+</body>
+</html>

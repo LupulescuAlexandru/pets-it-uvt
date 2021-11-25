@@ -1,0 +1,1 @@
+// input was empty

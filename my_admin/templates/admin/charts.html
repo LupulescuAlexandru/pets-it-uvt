@@ -1,0 +1,55 @@
+{% extends "admin/index.html" %}
+
+{% block extrahead %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js" type="text/javascript"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+$( document ).ready(function() {
+    var ctx = document.getElementById('myChart');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Ian', 'Feb', 'Mar', 'Apr', 'Mai', 'Iun', 'Iul', 'Aug', 'Sep', 'Oct', 'Noi', 'Dec'],
+        datasets: [{
+            label: 'Incasari',
+            data: {{ incasari }},
+            backgroundColor: [
+                'rgba(215, 40, 40, 0.6)',
+                'rgba(215, 130, 44, 0.6)',
+                'rgba(255, 255, 0, 0.6)',
+                'rgba(0, 0, 255, 0.6)',
+                'rgba(161, 140, 255, 0.6)',
+                'rgba(208, 140, 142, 0.6)',
+                'rgba(0, 255, 0, 0.6)',
+                'rgba(255, 255, 0, 0.6)',
+                'rgba(0, 112, 166, 0.6)',
+            ],
+
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+});
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="chart-container" style="height:500px; width:800px">
+    <canvas id="myChart"></canvas>
+</div>
+{{ block.super }}
+
+{% endblock %}
